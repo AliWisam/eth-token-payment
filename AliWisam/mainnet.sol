@@ -20,13 +20,13 @@ contract payment is Ownable{
     Tokens [] private TokensList;
 
     address payable vault;
-    
+
+ 
     constructor() {
 
     vault = payable(owner());
-    //require(_tokenAddr != address(0), "addToWhitelist: 0 Address cannot be added");
-    //uint balance[3] = [1, 2, 3];
-        address[] memory tokens = [
+   // addresses to receive payments
+        address[8] memory tokens = [
         0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE,
         0xC40AF1E4fEcFA05Ce6BAb79DcD8B373d2E436c4E,
         0x8B3192f5eEBD8579568A2Ed41E6FEB402f93f73F,
@@ -37,22 +37,17 @@ contract payment is Ownable{
         0x0F5D2fB29fb7d3CFeE444a200298f468908cC942
         ];
 
-        whitelist[0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE] = true;
-        whitelist[0xC40AF1E4fEcFA05Ce6BAb79DcD8B373d2E436c4E] = true;
-        whitelist[0x8B3192f5eEBD8579568A2Ed41E6FEB402f93f73F] = true;
-        whitelist[0xBB0E17EF65F82Ab018d8EDd776e8DD940327B28b] = true;
-        whitelist[0xdAC17F958D2ee523a2206206994597C13D831ec7] = true;
-        whitelist[0x249e38ea4102d0cf8264d3701f1a0e39c4f2dc3b] = true;
-        whitelist[0x3845badAde8e6dFF049820680d1F14bD3903a5d0] = true;
-        whitelist[0x0F5D2fB29fb7d3CFeE444a200298f468908cC942] = true;
+     for(uint i = 0; i <= tokens.length; i++){
 
+        whitelist[tokens[i]] = true;
 
-     // TokensList.push(Tokens(
-       // ERC20Contract.name(),
-       // ERC20Contract.symbol(),
-       // _tokenAddr
-       // ));
-        
+       TokensList.push(Tokens(
+       ERC20Contract.name(),
+       ERC20Contract.symbol(),
+       tokens[i]
+       ));
+
+        }
     } 
     
     function receiveTokens(address _tokenAddr, uint _amount) external {
@@ -72,7 +67,7 @@ contract payment is Ownable{
         return true;
     }
     
-    function addToWhitelist(address _tokenAddr) external onlyOwner {
+    function addToWhitelist(address _tokenAddr) public onlyOwner {
         require(_tokenAddr != address(0), "addToWhitelist: 0 Address cannot be added");
         require(whitelist[_tokenAddr] != true, "addToWhitelist: Already Whitelisted");
 
