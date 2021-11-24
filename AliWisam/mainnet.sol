@@ -1,3 +1,5 @@
+//SPDX-License-Identifier: UNLICENSED"
+
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -25,7 +27,8 @@ contract payment is Ownable{
     constructor() {
 
     vault = payable(owner());
-   // addresses to receive payments
+   
+    // addresses to receive payments
         address[8] memory tokens = [
         0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE,
         0xC40AF1E4fEcFA05Ce6BAb79DcD8B373d2E436c4E,
@@ -36,8 +39,7 @@ contract payment is Ownable{
         0x3845badAde8e6dFF049820680d1F14bD3903a5d0,
         0x0F5D2fB29fb7d3CFeE444a200298f468908cC942
         ];
-
-     for(uint i = 0; i <= tokens.length; i++){
+        for(uint i = 0; i <= tokens.length; i++){
 
         whitelist[tokens[i]] = true;
 
@@ -59,9 +61,9 @@ contract payment is Ownable{
         emit TokenReceived(ERC20Contract.name(), ERC20Contract.decimals(), _amount, msg.sender);
     }
     
-    function checkWhitelisted(address [] memory tokens) private view returns(bool){
-        for(uint i = 0; i < tokens.length; i++){
-            if(whitelist[tokens[i]] == false)
+    function checkWhitelisted(address [] memory token) private view returns(bool){
+        for(uint i = 0; i < token.length; i++){
+            if(whitelist[token[i]] == false)
                 return false;
         }
         return true;
