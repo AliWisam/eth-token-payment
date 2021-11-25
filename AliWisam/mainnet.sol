@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: UNLICENSED"
+//SPDX-License-Identifier: UNLICENSED
 
 pragma solidity ^0.8.7;
 
@@ -39,16 +39,8 @@ contract payment is Ownable{
         0x3845badAde8e6dFF049820680d1F14bD3903a5d0,
         0x0F5D2fB29fb7d3CFeE444a200298f468908cC942
         ];
-        for(uint i = 0; i < tokens.length; i++){
-
-        whitelist[tokens[i]] = true;
-
-       TokensList.push(Tokens(
-       ERC20Contract.name(),
-       ERC20Contract.symbol(),
-       tokens[i]
-       ));
-
+       for(uint i = 0; i < tokens.length; i++){
+            addToWhitelist(tokens[i]);
         }
     } 
     
