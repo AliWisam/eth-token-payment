@@ -18,7 +18,7 @@ contract payment is Ownable{
     }
 
     ERC20 ERC20Contract;
-    mapping(address => bool) public whitelist;
+    mapping(address => bool) public isWhitelisted;
     Tokens [] private TokensList;
 
     address payable vault;
@@ -31,24 +31,16 @@ contract payment is Ownable{
     // addresses to receive payments
         address[3] memory tokens = [
         0xaD6D458402F60fD3Bd25163575031ACDce07538D,
-        0x6EE856Ae55B6E1A249f04cd3b947141bc146273c,
-        0x16c550a97Ad2ae12C0C8CF1CC3f8DB4e0c45238f
+        0x16c550a97Ad2ae12C0C8CF1CC3f8DB4e0c45238f,
+        0x6EE856Ae55B6E1A249f04cd3b947141bc146273c
         ];
         for(uint i = 0; i < tokens.length; i++){
-
-        whitelist[tokens[i]] = true;
-
-       TokensList.push(Tokens(
-       ERC20Contract.name(),
-       ERC20Contract.symbol(),
-       tokens[i]
-       ));
-
+            addToWhitelist(tokens[i]);
         }
     } 
     
     function receiveTokens(address _tokenAddr, uint _amount) external {
-        require(whitelist[_tokenAddr], "Token not accepted");
+        require(isWhitelisted[_tokenAddr], "Token not accepted");
         require(_amount > 0, "Amount Not Valid");
         ERC20Contract = ERC20(_tokenAddr);
         ERC20Contract.transferFrom(msg.sender, vault, _amount);
@@ -58,7 +50,7 @@ contract payment is Ownable{
     
     function checkWhitelisted(address [] memory token) private view returns(bool){
         for(uint i = 0; i < token.length; i++){
-            if(whitelist[token[i]] == false)
+            if(isWhitelisted[token[i]] == false)
                 return false;
         }
         return true;
@@ -66,9 +58,9 @@ contract payment is Ownable{
     
     function addToWhitelist(address _tokenAddr) public onlyOwner {
         require(_tokenAddr != address(0), "addToWhitelist: 0 Address cannot be added");
-        require(whitelist[_tokenAddr] != true, "addToWhitelist: Already Whitelisted");
+        require(isWhitelisted[_tokenAddr] != true, "addToWhitelist: Already Whitelisted");
 
-        whitelist[_tokenAddr] = true;
+        isWhitelisted[_tokenAddr] = true;
         ERC20Contract = ERC20(_tokenAddr);
 
         TokensList.push(Tokens(
@@ -80,8 +72,8 @@ contract payment is Ownable{
     
     function removeFromWhitelist(address _tokenAddr) external onlyOwner {
         require(_tokenAddr != address(0), "removeFromWhitelist: Wrong Address");
-        require(whitelist[_tokenAddr] != false, "removeFromWhitelist: Already removed from Whitelist");
-        whitelist[_tokenAddr] = false;
+        require(isWhitelisted[_tokenAddr] != false, "removeFromWhitelist: Already removed from Whitelist");
+        isWhitelisted[_tokenAddr] = false;
 
         for (uint i = 0; i < TokensList.length; i++){
             if(TokensList[i].Address == _tokenAddr){
