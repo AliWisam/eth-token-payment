@@ -30,10 +30,8 @@ contract payment is Ownable{
    
     // addresses to receive payments
     //that usdt is not here, so I can add.
-        address[3] memory tokens = [
-        0xaD6D458402F60fD3Bd25163575031ACDce07538D,
-        0x16c550a97Ad2ae12C0C8CF1CC3f8DB4e0c45238f,
-        0x6EE856Ae55B6E1A249f04cd3b947141bc146273c
+        address[1] memory tokens = [
+        0x79d2649Ef7fD7c314DBE32cb793d1e3C17418FD8
         ];
         for(uint i = 0; i < tokens.length; i++){
             addToWhitelist(tokens[i]);
