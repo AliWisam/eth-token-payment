@@ -44,6 +44,7 @@ contract payment is Ownable{
     function receiveTokens(address _tokenAddr, uint _amount) external {
         require(isWhitelisted[_tokenAddr], "Token not accepted");
         require(_amount > 0, "Amount Not Valid");
+        require(ERC20Contract.allowance());
         ERC20Contract = ERC20(_tokenAddr);
         ERC20Contract.transferFrom(msg.sender, vault, _amount);
 
