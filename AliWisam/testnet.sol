@@ -29,10 +29,12 @@ contract payment is Ownable{
     vault = payable(owner());
    
     // addresses to receive payments
-        address[3] memory tokens = [
+    //that usdt is not here, so I can add.
+        address[4] memory tokens = [
         0xaD6D458402F60fD3Bd25163575031ACDce07538D,
         0x16c550a97Ad2ae12C0C8CF1CC3f8DB4e0c45238f,
-        0x6EE856Ae55B6E1A249f04cd3b947141bc146273c
+        0x6EE856Ae55B6E1A249f04cd3b947141bc146273c,
+        0x110a13FC3efE6A245B50102D2d79B3E76125Ae83
         ];
         for(uint i = 0; i < tokens.length; i++){
             addToWhitelist(tokens[i]);
